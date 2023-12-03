@@ -1,19 +1,25 @@
-from asyncio import run
+from asyncio import gather
+from asyncio import run as run_coroutine
 from pathlib import Path
 from sys import exit
 from typing import Tuple
 
 import click
 from aiohttp import ClientError
+from typing_aliases import AnyError, DynamicTuple, is_instance
 
-from aoc.constants import TOKEN_PATH
+from aoc.constants import DATA_PATH, TOKEN_PATH
+from aoc.data import dump_data
 from aoc.http import HTTPClient
 from aoc.primitives import Day, Key, Part, Year
+from aoc.runners import Runner
+from aoc.solutions import AnyFinalResult, AnyResult
 from aoc.time import aoc_today, get_key_for_date
 from aoc.tokens import dump_token, load_token, remove_token
 from aoc.versions import version_info
 
 ERROR = 1
+ALL = -1
 
 
 @click.group()
@@ -21,6 +27,150 @@ ERROR = 1
 @click.version_option(str(version_info), "--version", "-V")
 def aoc() -> None:
     pass
+
+
+INDENT = "    "
+
+ANSWER = "answer: {}"
+answer = ANSWER.format
+
+ANSWER_ONE = "answer one: {}"
+answer_one = ANSWER_ONE.format
+
+ANSWER_TWO = "answer two: {}"
+answer_two = ANSWER_TWO.format
+
+PARSE_TIME = "parse time: {}"
+parse_time = PARSE_TIME.format
+
+SOLVE_TIME = "solve time: {}"
+solve_time = SOLVE_TIME.format
+
+SOLVE_ONE_TIME = "solve one time: {}"
+solve_one_time = SOLVE_ONE_TIME.format
+
+SOLVE_TWO_TIME = "solve two time: {}"
+solve_two_time = SOLVE_TWO_TIME.format
+
+
+def print_result(result: AnyResult, indent: str = INDENT) -> None:
+    click.echo(indent + answer_one(result.answer_one))
+    click.echo(indent + answer_two(result.answer_two))
+    click.echo(indent + parse_time(result.parse_time))
+    click.echo(indent + solve_one_time(result.solve_one_time))
+    click.echo(indent + solve_two_time(result.solve_two_time))
+
+
+def print_final_result(final_result: AnyFinalResult, indent: str = INDENT) -> None:
+    click.echo(indent + answer(final_result.answer))
+    click.echo(indent + parse_time(final_result.parse_time))
+    click.echo(indent + solve_time(final_result.solve_time))
+
+
+PART_ONE = "part one: {}"
+part_one = PART_ONE.format
+
+PART_TWO = "part two: {}"
+part_two = PART_TWO.format
+
+
+async def submit_result(
+    result: AnyResult, key: Key, client: HTTPClient, indent: str = INDENT
+) -> None:
+    one = Part.ONE
+    two = Part.TWO
+
+    result_one, result_two = await gather(
+        client.submit_answer(key, one, result.answer_one),
+        client.submit_answer(key, two, result.answer_two),
+        return_exceptions=True,
+    )
+
+    if is_instance(result_one, AnyError):
+        click.echo(failed_to_submit(key, one.value), err=True)
+
+    else:
+        click.echo(indent + part_one(result_one.message))
+
+    if is_instance(result_two, AnyError):
+        click.echo(failed_to_submit(key, two.value), err=True)
+
+    else:
+        click.echo(indent + part_two(result_two.message))
+
+
+async def submit_final_result(
+    final_result: AnyFinalResult, key: Key, client: HTTPClient, indent: str = INDENT
+) -> None:
+    only = Part.ONLY
+
+    try:
+        result = await client.submit_answer(key, only, final_result.answer)
+
+    except ClientError:
+        click.echo(failed_to_submit(key, only.value), err=True)
+
+    else:
+        click.echo(indent + result.message)
+
+
+RESULT_FOR = "result for `{}`"
+result_for = RESULT_FOR.format
+
+FINAL_RESULT_FOR = "final result for `{}`"
+final_result_for = FINAL_RESULT_FOR.format
+
+
+@aoc.command(
+    help="Runs the solutions provided in the modules.",
+    short_help="Runs the solutions provided in the modules.",
+)
+@click.help_option("--help", "-h")
+@click.option("--submit", "-S", is_flag=True, help="Whether to submit the answers.")
+@click.option(
+    "--data-path",
+    "-D",
+    type=Path,
+    default=DATA_PATH,
+    show_default=True,
+    help="The path to the data cache directory.",
+)
+@click.option(
+    "--token-path",
+    "-T",
+    type=Path,
+    default=TOKEN_PATH,
+    show_default=True,
+    help="The path to the token file.",
+)
+@click.argument("modules", type=str, nargs=ALL)
+def run(submit: bool, data_path: Path, token_path: Path, modules: DynamicTuple[str]) -> None:
+    if modules:
+        runner = Runner()
+
+        if submit:
+            token = find_token(token_path)
+
+            client = HTTPClient(token)
+
+    for name in modules:
+        results = runner.run_module(name, data_path)
+
+        for key, result in results.results.items():
+            click.echo(result_for(key))
+
+            print_result(result)
+
+            if submit:
+                run_coroutine(submit_result(result, key, client))
+
+        for key, final_result in results.final_results.items():
+            click.echo(final_result_for(key))
+
+            print_final_result(final_result)
+
+            if submit:
+                run_coroutine(submit_final_result(final_result, key, client))
 
 
 NO_PROBLEM = "no problem"
@@ -78,15 +228,24 @@ FAILED_TO_DOWNLOAD_CURRENT = "failed to download the current problem data"
     ),
 )
 @click.help_option("--help", "-h")
+@click.option("--save", "-s", is_flag=True, help="Whether to save the data to cache.")
+@click.option(
+    "--data-path",
+    "-D",
+    type=Path,
+    default=DATA_PATH,
+    show_default=True,
+    help="The path to the data cache directory.",
+)
 @click.option(
     "--token-path",
-    "-t",
+    "-T",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
     help="The path to the token file.",
 )
-def download_today(token_path: Path) -> None:
+def download_today(save: bool, data_path: Path, token_path: Path) -> None:
     token = find_token(token_path)
 
     today = aoc_today()
@@ -102,14 +261,18 @@ def download_today(token_path: Path) -> None:
     client = HTTPClient(token)
 
     try:
-        data = run(client.download_data(key))
+        data = run_coroutine(client.download_data(key))
 
     except ClientError:
         click.echo(FAILED_TO_DOWNLOAD_CURRENT)
 
         exit(ERROR)
 
-    click.echo(data)
+    if save:
+        dump_data(data, key, data_path)
+
+    else:
+        click.echo(data)
 
 
 SUBMIT = "submit"
@@ -127,7 +290,7 @@ SUBMIT = "submit"
 @click.option("--part", "-p", type=int, required=True, prompt=True, help="The part of the problem.")
 @click.option(
     "--token-path",
-    "-t",
+    "-T",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
@@ -152,7 +315,7 @@ def submit_today(part: int, token_path: Path, answer: str) -> None:
     client = HTTPClient(token)
 
     try:
-        state = run(client.submit_answer(key, part_enum, answer))
+        state = run_coroutine(client.submit_answer(key, part_enum, answer))
 
     except ClientError as client_error:
         click.echo(client_error, err=True)
@@ -192,7 +355,7 @@ def find_token(path: Path) -> str:
 @click.help_option("--help", "-h")
 @click.option(
     "--path",
-    "-p",
+    "-P",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
@@ -209,7 +372,7 @@ def print(path: Path) -> None:
 @click.help_option("--help", "-h")
 @click.option(
     "--path",
-    "-p",
+    "-P",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
@@ -227,7 +390,7 @@ def set(token: str, path: Path) -> None:
 @click.help_option("--help", "-h")
 @click.option(
     "--path",
-    "-p",
+    "-P",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
@@ -267,9 +430,7 @@ def get_part(part_value: int) -> Part:
         exit(ERROR)
 
 
-def get_key_part_pair(
-    year_value: int, day_value: int, part_value: int
-) -> Tuple[Key, Part]:
+def get_key_part_pair(year_value: int, day_value: int, part_value: int) -> Tuple[Key, Part]:
     return (get_key(year_value, day_value), get_part(part_value))
 
 
@@ -284,15 +445,24 @@ failed_to_download = FAILED_TO_DOWNLOAD.format
 @click.help_option("--help", "-h")
 @click.option("--year", "-y", type=int, required=True, prompt=True, help="The year of the problem.")
 @click.option("--day", "-d", type=int, required=True, prompt=True, help="The day of the problem.")
+@click.option("--save", "-s", is_flag=True, help="Whether to save the data to cache.")
+@click.option(
+    "--data-path",
+    "-D",
+    type=Path,
+    default=DATA_PATH,
+    show_default=True,
+    help="The path to the data cache directory.",
+)
 @click.option(
     "--token-path",
-    "-t",
+    "-T",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
     help="The path to the token file.",
 )
-def download(year: int, day: int, token_path: Path) -> None:
+def download(year: int, day: int, save: bool, data_path: Path, token_path: Path) -> None:
     token = find_token(token_path)
 
     key = get_key(year, day)
@@ -300,14 +470,22 @@ def download(year: int, day: int, token_path: Path) -> None:
     client = HTTPClient(token)
 
     try:
-        data = run(client.download_data(key))
+        data = run_coroutine(client.download_data(key))
 
     except ClientError:
         click.echo(failed_to_download(key), err=True)
 
         exit(ERROR)
 
-    click.echo(data)
+    if save:
+        dump_data(data, key, data_path)
+
+    else:
+        click.echo(data)
+
+
+FAILED_TO_SUBMIT = "failed to submit the answer for problem `{}` part `{}`"
+failed_to_submit = FAILED_TO_SUBMIT.format
 
 
 @aoc.command(
@@ -320,7 +498,7 @@ def download(year: int, day: int, token_path: Path) -> None:
 @click.option("--part", "-p", type=int, required=True, prompt=True, help="The part of the problem.")
 @click.option(
     "--token-path",
-    "-t",
+    "-T",
     type=Path,
     default=TOKEN_PATH,
     show_default=True,
@@ -335,10 +513,10 @@ def submit(year: int, day: int, part: int, token_path: Path, answer: str) -> Non
     client = HTTPClient(token)
 
     try:
-        state = run(client.submit_answer(key, part_enum, answer))
+        state = run_coroutine(client.submit_answer(key, part_enum, answer))
 
-    except ClientError as client_error:
-        click.echo(client_error, err=True)
+    except ClientError:
+        click.echo(failed_to_submit(key, part_enum.value), err=True)
 
         exit(ERROR)
 

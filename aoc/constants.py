@@ -7,9 +7,8 @@ __all__ = (
     # paths
     "ROOT",
     "HOME",
-    # token
-    "TOKEN_NAME",
     "TOKEN_PATH",
+    "DATA_PATH",
     # bounds
     "FIRST_YEAR",
     "FIRST_DAY",
@@ -53,6 +52,12 @@ HOME = Path.home()
 
 TOKEN_NAME = ".aoc"
 TOKEN_PATH = HOME / TOKEN_NAME
+
+CACHE_NAME = ".cache"
+AOC_NAME = "aoc"
+DATA_NAME = "data"
+
+DATA_PATH = HOME / CACHE_NAME / AOC_NAME / DATA_NAME
 
 # bounds
 

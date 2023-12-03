@@ -12,7 +12,7 @@ WRONG_MATCH = "that's not the right answer"
 TIMEOUT_MATCH = "you gave an answer too recently"
 
 CORRECT_MESSAGE = "the answer is correct"
-SOLVED_MESSAGE = "the problem was already solved"
+SOLVED_MESSAGE = "the problem part was already solved"
 LOW_MESSAGE = "the answer is too low"
 HIGH_MESSAGE = "the answer is too high"
 WRONG_MESSAGE = "the answer is wrong"

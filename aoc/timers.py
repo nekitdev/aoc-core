@@ -20,20 +20,24 @@ Clock = Nullary[int]
 @frozen()
 class Elapsed:
     """Represents elapsed time, in nanoseconds and human-readable format."""
-    nanoseconds: int
-    human: str
 
-    @classmethod
-    def from_nanoseconds(cls, nanoseconds: int, rounding: int = DEFAULT_ROUNDING) -> Self:
-        human = INSTANT
+    nanoseconds: int = field()
+    rounding: int = field(default=DEFAULT_ROUNDING)
+    string: str = field(init=False)
+
+    @string.default
+    def default_string(self) -> str:
+        nanoseconds = self.nanoseconds
 
         for name, factor in FACTORS:
             if nanoseconds > factor:
-                human = str(round(nanoseconds / factor, rounding)) + name
+                return str(round(nanoseconds / factor, self.rounding)) + name
 
-                break
+        return INSTANT
 
-        return Elapsed(nanoseconds, human)
+    def __str__(self) -> str:
+        return self.string
+
 
 @final
 @frozen()
@@ -56,7 +60,7 @@ class Timer:
         Returns:
             The time elapsed since the creation of this timer.
         """
-        return Elapsed.from_nanoseconds(self.clock() - self.created, rounding)
+        return Elapsed(self.clock() - self.created, rounding)
 
     def reset(self) -> Self:
         """Creates and returns a new timer of the same type and with the same clock.

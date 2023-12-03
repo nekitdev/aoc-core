@@ -5,9 +5,9 @@ from typing import Any, Dict, Generic, Protocol, Type, TypeVar, final
 
 from attrs import frozen
 from named import get_name
+
 from aoc.names import get_key_by_name
 from aoc.primitives import Key
-
 from aoc.timers import Elapsed, now
 
 __all__ = ("Result", "Solution", "FinalResult", "FinalSolution")
@@ -37,6 +37,8 @@ class Result(Generic[T, U]):
     solve_two_time: Elapsed
     """The time it took to solve part two."""
 
+
+AnyResult = Result[Any, Any]
 
 MUST_IMPLEMENT = "solutions must implement the `{}` method"
 must_implement = MUST_IMPLEMENT.format
@@ -151,6 +153,8 @@ class FinalResult(Generic[T]):
     solve_time: Elapsed
     """The time it took to solve the problem."""
 
+
+AnyFinalResult = FinalResult[Any]
 
 FINAL_SOLUTIONS: Dict[Key, AnyFinalSolutionType] = {}
 

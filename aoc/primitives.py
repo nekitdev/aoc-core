@@ -1,7 +1,7 @@
 from __future__ import annotations
-from enum import Enum
 
-from typing import Any, final
+from enum import Enum
+from typing import final
 
 from attrs import Attribute, field, frozen
 
@@ -69,7 +69,7 @@ class Key:
     """The key of the problem.
 
     This is essentially the `(year, day)` combination of
-    [`Year`][aoc.types.Year] and [`Day`][aoc.types.Day].
+    [`Year`][aoc.primitives.Year] and [`Day`][aoc.primitives.Day].
     """
 
     year: Year
@@ -83,8 +83,13 @@ class Key:
 
 
 class Part(Enum):
+    """The part of the problem."""
+
     ONE = 1
     """Part one of the problem."""
 
     TWO = 2
     """Part two of the problem."""
+
+    ONLY = ONE
+    """The only part of the problem."""

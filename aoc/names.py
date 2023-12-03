@@ -1,7 +1,7 @@
 from re import compile
 from typing import Literal
-from aoc.errors import InternalError
 
+from aoc.errors import InternalError
 from aoc.primitives import Day, Key, Year
 
 __all__ = ("get_key_by_name", "get_name_by_key")

@@ -6,7 +6,7 @@ __all__ = ("AOC_TIMEZONE", "aoc_today", "get_key_for_date")
 
 AOC_TIMEZONE_NAME = "EST"
 
-AOC_TIMEZONE = timezone(AOC_TIMEZONE_NAME)
+AOC_TIMEZONE = timezone(AOC_TIMEZONE_NAME)  # type: ignore
 
 
 def aoc_today() -> Date:
