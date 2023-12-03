@@ -5,6 +5,7 @@ from typing import Tuple
 
 import click
 from aiohttp import ClientError
+from trogon import tui
 from typing_aliases import DynamicTuple, NormalError
 from wraps import Panic
 
@@ -22,7 +23,10 @@ from aoc.versions import version_info
 ERROR = 1
 ALL = -1
 
+UI = "ui"
 
+
+@tui(command=UI, help="Open UI.")
 @click.group()
 @click.help_option("--help", "-h")
 @click.version_option(str(version_info), "--version", "-V")
