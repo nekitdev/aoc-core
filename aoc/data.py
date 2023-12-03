@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from aoc.constants import DATA_PATH, DEFAULT_ENCODING, DEFAULT_ERRORS
+from aoc.errors import DataNotFound
 from aoc.primitives import Key
 
 
@@ -14,7 +15,11 @@ def load_data(
     encoding: str = DEFAULT_ENCODING,
     errors: str = DEFAULT_ERRORS,
 ) -> str:
-    return get_path_for_key(key, data_path).read_text(encoding, errors)
+    try:
+        return get_path_for_key(key, data_path).read_text(encoding, errors)
+
+    except OSError as origin:
+        raise DataNotFound(key, data_path) from origin
 
 
 def dump_data(

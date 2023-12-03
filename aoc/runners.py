@@ -29,8 +29,8 @@ class Runner:
         solutions = SOLUTIONS
         final_solutions = FINAL_SOLUTIONS
 
-        results = dict()
-        final_results = dict()
+        results = {}
+        final_results = {}
 
         for name in namespace:
             try:

@@ -1,4 +1,3 @@
-from asyncio import gather
 from asyncio import run as run_coroutine
 from pathlib import Path
 from sys import exit
@@ -6,10 +5,12 @@ from typing import Tuple
 
 import click
 from aiohttp import ClientError
-from typing_aliases import AnyError, DynamicTuple, is_instance
+from typing_aliases import DynamicTuple, NormalError
+from wraps import Panic
 
 from aoc.constants import DATA_PATH, TOKEN_PATH
 from aoc.data import dump_data
+from aoc.errors import DataNotFound, TokenNotFound
 from aoc.http import HTTPClient
 from aoc.primitives import Day, Key, Part, Year
 from aoc.runners import Runner
@@ -80,19 +81,19 @@ async def submit_result(
     one = Part.ONE
     two = Part.TWO
 
-    result_one, result_two = await gather(
-        client.submit_answer(key, one, result.answer_one),
-        client.submit_answer(key, two, result.answer_two),
-        return_exceptions=True,
-    )
+    try:
+        result_one = await client.submit_answer(key, one, result.answer_one)
 
-    if is_instance(result_one, AnyError):
+    except ClientError:
         click.echo(failed_to_submit(key, one.value), err=True)
 
     else:
         click.echo(indent + part_one(result_one.message))
 
-    if is_instance(result_two, AnyError):
+    try:
+        result_two = await client.submit_answer(key, two, result.answer_two)
+
+    except ClientError:
         click.echo(failed_to_submit(key, two.value), err=True)
 
     else:
@@ -119,6 +120,15 @@ result_for = RESULT_FOR.format
 
 FINAL_RESULT_FOR = "final result for `{}`"
 final_result_for = FINAL_RESULT_FOR.format
+
+MODULE_DATA_NOT_FOUND = "data not found for module `{}` ({})"
+module_data_not_found = MODULE_DATA_NOT_FOUND.format
+
+MODULE_ERRORED = "module `{}` errored ({})"
+module_errored = MODULE_ERRORED.format
+
+MODULE_PANICKED = "module `{}` panicked ({})"
+module_panicked = MODULE_PANICKED.format
 
 
 @aoc.command(
@@ -154,7 +164,21 @@ def run(submit: bool, data_path: Path, token_path: Path, modules: DynamicTuple[s
             client = HTTPClient(token)
 
     for name in modules:
-        results = runner.run_module(name, data_path)
+        try:
+            results = runner.run_module(name, data_path)
+
+        except DataNotFound as data_not_found:
+            click.echo(module_data_not_found(name, data_not_found), err=True)
+
+            continue
+
+        except Panic as panic:
+            click.echo(module_panicked(name, panic), err=True)
+            continue
+
+        except NormalError as error:
+            click.echo(module_errored(name, error), err=True)
+            continue
 
         for key, result in results.results.items():
             click.echo(result_for(key))
@@ -334,16 +358,12 @@ def token() -> None:
     pass
 
 
-FAILED_TO_FIND_TOKEN = "failed to find the token (path `{}`)"
-failed_to_find_token = FAILED_TO_FIND_TOKEN.format
-
-
 def find_token(path: Path) -> str:
     try:
         return load_token(path)
 
-    except OSError:
-        click.echo(failed_to_find_token(path), err=True)
+    except TokenNotFound as token_not_found:
+        click.echo(token_not_found, err=True)
 
         exit(ERROR)
 

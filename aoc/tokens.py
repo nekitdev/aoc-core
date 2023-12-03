@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from aoc.constants import DEFAULT_ENCODING, DEFAULT_ERRORS, NEW_LINE, TOKEN_PATH
+from aoc.errors import TokenNotFound
 
 __all__ = ("load_token", "dump_token", "remove_token")
 
@@ -8,7 +9,11 @@ __all__ = ("load_token", "dump_token", "remove_token")
 def load_token(
     path: Path = TOKEN_PATH, encoding: str = DEFAULT_ENCODING, errors: str = DEFAULT_ERRORS
 ) -> str:
-    return path.read_text(encoding, errors).strip()
+    try:
+        return path.read_text(encoding, errors).strip()
+
+    except OSError as origin:
+        raise TokenNotFound(path) from origin
 
 
 def dump_token(
