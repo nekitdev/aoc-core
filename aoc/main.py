@@ -1,11 +1,11 @@
 from asyncio import run as run_coroutine
 from pathlib import Path
 from sys import exit
-from typing import Tuple
+from typing import TYPE_CHECKING, Tuple
 
 import click
 from aiohttp import ClientError
-from trogon import tui
+from trogon import tui  # type: ignore
 from typing_aliases import DynamicTuple, NormalError
 from wraps import Panic
 
@@ -26,12 +26,15 @@ ALL = -1
 UI = "ui"
 
 
-@tui(command=UI, help="Open UI.")
 @click.group()
 @click.help_option("--help", "-h")
 @click.version_option(str(version_info), "--version", "-V")
 def aoc() -> None:
     pass
+
+
+if not TYPE_CHECKING:
+    aoc = tui(command=UI, help="Open UI.")(aoc)
 
 
 INDENT = "    "
