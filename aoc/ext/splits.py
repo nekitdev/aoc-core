@@ -4,7 +4,12 @@ from typing_aliases import Unary
 from aoc.ext.constants import DOUBLE_NEW_LINE, NEW_LINE
 
 __all__ = (
-    "SplitResult", "Split", "split_at", "split_lines", "split_double_lines", "split_whitespace"
+    "SplitResult",
+    "Split",
+    "split_at",
+    "split_lines",
+    "split_double_lines",
+    "split_whitespace",
 )
 
 SplitResult = List[str]
