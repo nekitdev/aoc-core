@@ -1,4 +1,4 @@
-# `aoc.py`
+# `aoc-core`
 
 [![License][License Badge]][License]
 [![Version][Version Badge]][Package]
@@ -21,38 +21,43 @@
 Installing the library with `pip` is quite simple:
 
 ```console
-$ pip install aoc.py
+$ pip install aoc-core
 ```
 
 Alternatively, the library can be installed from source:
 
 ```console
-$ git clone https://github.com/nekitdev/aoc.py.git
-$ cd aoc.py
+$ git clone https://github.com/nekitdev/aoc-core.git
+$ cd aoc-core
 $ python -m pip install .
 ```
 
 ### poetry
 
-You can add `aoc.py` as a dependency with the following command:
+You can add `aoc-core` as a dependency with the following command:
 
 ```console
-$ poetry add aoc.py
+$ poetry add aoc-core
 ```
 
 Or by directly specifying it in the configuration like so:
 
 ```toml
 [tool.poetry.dependencies]
-"aoc.py" = "^0.1.0"
+aoc-core = "^0.1.0"
 ```
 
 Alternatively, you can add it directly from the source:
 
 ```toml
-[tool.poetry.dependencies."aoc.py"]
-git = "https://github.com/nekitdev/aoc.py.git"
+[tool.poetry.dependencies.aoc-core]
+git = "https://github.com/nekitdev/aoc-core.git"
 ```
+
+## Extras
+
+`aoc-core` provides an extra `ext`, which installs modules like [`iters`][iters], [`funcs`][funcs]
+and [`wraps`][wraps] which can help solving problems in functional style.
 
 ## Example
 
@@ -113,7 +118,7 @@ In order to define solutions, we need to figure out three types to use:
 - `U`, the answer type for the second part of the problem.
 
 Since the problem is about navigating the given string and we return integers,
-our types will be: `I = str, T = int, U = int`.
+our types will be: `I = str`, `T = int` and possibly `U = int`.
 
 To define the solution, we need to derive from [`Solution`][aoc.solutions.Solution]:
 
@@ -260,46 +265,50 @@ You can find the changelog [here][Changelog].
 
 ## Security Policy
 
-You can find the Security Policy of `aoc.py` [here][Security].
+You can find the Security Policy of `aoc-core` [here][Security].
 
 ## Contributing
 
-If you are interested in contributing to `aoc.py`, make sure to take a look at the
+If you are interested in contributing to `aoc-core`, make sure to take a look at the
 [Contributing Guide][Contributing Guide], as well as the [Code of Conduct][Code of Conduct].
 
 ## License
 
-`aoc.py` is licensed under the MIT License terms. See [License][License] for details.
+`aoc-core` is licensed under the MIT License terms. See [License][License] for details.
 
 [Email]: mailto:support@nekit.dev
 
 [Discord]: https://nekit.dev/discord
 
-[Actions]: https://github.com/nekitdev/aoc.py/actions
+[Actions]: https://github.com/nekitdev/aoc-core/actions
 
-[Changelog]: https://github.com/nekitdev/aoc.py/blob/main/CHANGELOG.md
-[Code of Conduct]: https://github.com/nekitdev/aoc.py/blob/main/CODE_OF_CONDUCT.md
-[Contributing Guide]: https://github.com/nekitdev/aoc.py/blob/main/CONTRIBUTING.md
-[Security]: https://github.com/nekitdev/aoc.py/blob/main/SECURITY.md
+[Changelog]: https://github.com/nekitdev/aoc-core/blob/main/CHANGELOG.md
+[Code of Conduct]: https://github.com/nekitdev/aoc-core/blob/main/CODE_OF_CONDUCT.md
+[Contributing Guide]: https://github.com/nekitdev/aoc-core/blob/main/CONTRIBUTING.md
+[Security]: https://github.com/nekitdev/aoc-core/blob/main/SECURITY.md
 
-[License]: https://github.com/nekitdev/aoc.py/blob/main/LICENSE
+[License]: https://github.com/nekitdev/aoc-core/blob/main/LICENSE
 
-[Package]: https://pypi.org/project/aoc.py
-[Coverage]: https://codecov.io/gh/nekitdev/aoc.py
-[Documentation]: https://nekitdev.github.io/aoc.py
+[Package]: https://pypi.org/project/aoc-core
+[Coverage]: https://codecov.io/gh/nekitdev/aoc-core
+[Documentation]: https://nekitdev.github.io/aoc-core
 
 [Discord Badge]: https://img.shields.io/badge/chat-discord-5865f2
-[License Badge]: https://img.shields.io/pypi/l/aoc.py
-[Version Badge]: https://img.shields.io/pypi/v/aoc.py
-[Downloads Badge]: https://img.shields.io/pypi/dm/aoc.py
+[License Badge]: https://img.shields.io/pypi/l/aoc-core
+[Version Badge]: https://img.shields.io/pypi/v/aoc-core
+[Downloads Badge]: https://img.shields.io/pypi/dm/aoc-core
 
-[Documentation Badge]: https://github.com/nekitdev/aoc.py/workflows/docs/badge.svg
-[Check Badge]: https://github.com/nekitdev/aoc.py/workflows/check/badge.svg
-[Test Badge]: https://github.com/nekitdev/aoc.py/workflows/test/badge.svg
-[Coverage Badge]: https://codecov.io/gh/nekitdev/aoc.py/branch/main/graph/badge.svg
+[Documentation Badge]: https://github.com/nekitdev/aoc-core/workflows/docs/badge.svg
+[Check Badge]: https://github.com/nekitdev/aoc-core/workflows/check/badge.svg
+[Test Badge]: https://github.com/nekitdev/aoc-core/workflows/test/badge.svg
+[Coverage Badge]: https://codecov.io/gh/nekitdev/aoc-core/branch/main/graph/badge.svg
+
+[iters]: https://github.com/nekitdev/iters
+[funcs]: https://github.com/nekitdev/funcs
+[wraps]: https://github.com/nekitdev/wraps
 
 [Advent of Code]: https://adventofcode.com/
 
 [2015-01]: https://adventofcode.com/2015/day/1
 
-[aoc.solutions.Solution]: https://nekitdev.github.io/aoc.py/reference/solutions#aoc.solutions.Solution
+[aoc.solutions.Solution]: https://nekitdev.github.io/aoc-core/reference/solutions#aoc.solutions.Solution

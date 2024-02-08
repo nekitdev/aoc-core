@@ -1,7 +1,7 @@
 """Advent of Code in Python."""
 
 __description__ = "Advent of Code in Python."
-__url__ = "https://github.com/nekitdev/aoc.py"
+__url__ = "https://github.com/nekitdev/aoc-core"
 
 __title__ = "aoc"
 __author__ = "nekitdev"

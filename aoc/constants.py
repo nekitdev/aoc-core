@@ -96,7 +96,7 @@ DEFAULT_ROUNDING = 5
 
 # names
 
-NAME = "aoc.py"
+NAME = "aoc-core"
 """The name of the library."""
 
 PYTHON = "python"

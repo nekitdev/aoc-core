@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "aoc.py"
+name = "aoc-core"
 version = "0.1.0"
 description = "Advent of Code in Python."
 authors = ["nekitdev"]
@@ -7,9 +7,9 @@ license = "MIT"
 
 readme = "README.md"
 
-homepage = "https://github.com/nekitdev/aoc.py"
-repository = "https://github.com/nekitdev/aoc.py"
-documentation = "https://nekitdev.github.io/aoc.py"
+homepage = "https://github.com/nekitdev/aoc-core"
+repository = "https://github.com/nekitdev/aoc-core"
+documentation = "https://nekitdev.github.io/aoc-core"
 
 keywords = ["python", "aoc"]
 
@@ -24,7 +24,7 @@ classifiers = [
 [tool.poetry.urls]
 Funding = "https://nekit.dev/funding"
 Discord = "https://nekit.dev/discord"
-Issues = "https://github.com/nekitdev/aoc.py/issues"
+Issues = "https://github.com/nekitdev/aoc-core/issues"
 
 [[tool.poetry.packages]]
 include = "aoc"
@@ -131,9 +131,9 @@ directory = "coverage"
 strict = true
 
 [tool.changelogging]
-name = "aoc.py"
+name = "aoc-core"
 version = "0.1.0"
-url = "https://github.com/nekitdev/aoc.py"
+url = "https://github.com/nekitdev/aoc-core"
 directory = "changes"
 output = "CHANGELOG.md"
 

@@ -1,9 +1,9 @@
-site_name: aoc.py
+site_name: aoc-core
 site_author: nekitdev
 site_description: Advent of Code in Python.
 
-repo_name: nekitdev/aoc.py
-repo_url: https://github.com/nekitdev/aoc.py
+repo_name: nekitdev/aoc-core
+repo_url: https://github.com/nekitdev/aoc-core
 
 remote_branch: github-pages
 
