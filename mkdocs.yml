@@ -9,6 +9,24 @@ remote_branch: github-pages
 
 nav:
   - Index: "index.md"
+  - Usage: "usage.md"
+  - Reference:
+    - Solutions: "reference/solutions.md"
+    - Runners: "reference/runners.md"
+    - Timers: "reference/timers.md"
+    - Primitives: "reference/primitives.md"
+    - Names: "reference/names.md"
+    - Errors: "reference/errors.md"
+    - Tokens: "reference/tokens.md"
+    - Data: "reference/data.md"
+    - Time: "reference/time.md"
+    - States: "reference/states.md"
+    - HTTP: "reference/http.md"
+    - Versions: "reference/versions.md"
+    - Constants: "reference/constants.md"
+    - Extensions:
+      - Constants: "reference/ext/constants.md"
+      - Splits: "reference/ext/splits.md"
   - Changelog: "changelog.md"
   - Security: "security.md"
   - Code of Conduct: "code_of_conduct.md"
@@ -55,6 +73,8 @@ plugins:
 
           import:
             - https://docs.python.org/3/objects.inv
+            - https://nekitdev.github.io/typing-aliases/objects.inv
+            - https://nekitdev.github.io/versions/objects.inv
 
 markdown_extensions:
   - pymdownx.highlight

@@ -7,7 +7,7 @@ from attrs import Attribute, field, frozen
 
 from aoc.constants import FIRST_DAY, FIRST_YEAR, LAST_DAY
 
-__all__ = ("Year", "Day", "Key")
+__all__ = ("Year", "Day", "Key", "Part")
 
 EXPECTED_YEAR = f"expected `year >= {FIRST_YEAR}`"
 

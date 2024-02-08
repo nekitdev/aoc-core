@@ -23,8 +23,6 @@ from aoc.versions import version_info
 ERROR = 1
 ALL = -1
 
-UI = "ui"
-
 
 @click.group()
 @click.help_option("--help", "-h")
@@ -34,7 +32,10 @@ def aoc() -> None:
 
 
 if not TYPE_CHECKING:
-    aoc = tui(command=UI, help="Open UI.")(aoc)
+    UI = "ui"
+    UI_HELP = "Open UI."
+
+    aoc = tui(command=UI, help=UI_HELP)(aoc)
 
 
 INDENT = "    "
@@ -128,19 +129,19 @@ result_for = RESULT_FOR.format
 FINAL_RESULT_FOR = "final result for `{}`"
 final_result_for = FINAL_RESULT_FOR.format
 
-MODULE_DATA_NOT_FOUND = "data not found for module `{}` ({})"
-module_data_not_found = MODULE_DATA_NOT_FOUND.format
+SOLUTION_DATA_NOT_FOUND = "data not found for solution `{}` ({})"
+solution_data_not_found = SOLUTION_DATA_NOT_FOUND.format
 
-MODULE_ERRORED = "module `{}` errored ({})"
-module_errored = MODULE_ERRORED.format
+SOLUTION_ERRORED = "solution `{}` errored ({})"
+solution_errored = SOLUTION_ERRORED.format
 
-MODULE_PANICKED = "module `{}` panicked ({})"
-module_panicked = MODULE_PANICKED.format
+SOLUTION_PANICKED = "solution `{}` panicked ({})"
+solution_panicked = SOLUTION_PANICKED.format
 
 
 @aoc.command(
-    help="Runs the solutions provided in the modules.",
-    short_help="Runs the solutions provided in the modules.",
+    help="Runs the solutions provided in the paths.",
+    short_help="Runs the solutions provided in the paths.",
 )
 @click.help_option("--help", "-h")
 @click.option("--submit", "-S", is_flag=True, help="Whether to submit the answers.")
@@ -160,9 +161,9 @@ module_panicked = MODULE_PANICKED.format
     show_default=True,
     help="The path to the token file.",
 )
-@click.argument("modules", type=str, nargs=ALL)
-def run(submit: bool, data_path: Path, token_path: Path, modules: DynamicTuple[str]) -> None:
-    if modules:
+@click.argument("paths", type=Path, nargs=ALL)
+def run(submit: bool, data_path: Path, token_path: Path, paths: DynamicTuple[Path]) -> None:
+    if paths:
         runner = Runner()
 
         if submit:
@@ -170,21 +171,21 @@ def run(submit: bool, data_path: Path, token_path: Path, modules: DynamicTuple[s
 
             client = HTTPClient(token)
 
-    for name in modules:
+    for path in paths:
         try:
-            results = runner.run_module(name, data_path)
+            results = runner.run_path(path, data_path)
 
         except DataNotFound as data_not_found:
-            click.echo(module_data_not_found(name, data_not_found), err=True)
+            click.echo(solution_data_not_found(path, data_not_found), err=True)
 
             continue
 
         except Panic as panic:
-            click.echo(module_panicked(name, panic), err=True)
+            click.echo(solution_panicked(path, panic), err=True)
             continue
 
         except NormalError as error:
-            click.echo(module_errored(name, error), err=True)
+            click.echo(solution_errored(path, error), err=True)
             continue
 
         for key, result in results.results.items():
@@ -238,7 +239,7 @@ def show() -> None:
     else:
         problem = PROBLEM.format(key)
 
-    today_string = today.to_date_string()  # type: ignore
+    today_string = today.to_date_string()
 
     click.echo(DATE.format(today_string, problem))
 

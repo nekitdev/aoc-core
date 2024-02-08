@@ -15,7 +15,7 @@ token_not_found = TOKEN_NOT_FOUND.format
 
 
 class TokenNotFound(RuntimeError):
-    """Token was not found."""
+    """The token was not found."""
 
     def __init__(self, path: Path) -> None:
         super().__init__(token_not_found(path.as_posix()))
@@ -33,7 +33,7 @@ data_not_found = DATA_NOT_FOUND.format
 
 
 class DataNotFound(RuntimeError):
-    """Data for the problem was not found."""
+    """The data for the problem was not found."""
 
     def __init__(self, key: Key, path: Path) -> None:
         super().__init__(data_not_found(key, path.as_posix()))
@@ -43,10 +43,12 @@ class DataNotFound(RuntimeError):
 
     @property
     def key(self) -> Key:
+        """The key of the problem."""
         return self._key
 
     @property
     def path(self) -> Path:
+        """The path to the problem's data file."""
         return self._path
 
 

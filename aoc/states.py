@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from enum import Enum, auto
 
+from typing_extensions import assert_never
+
 __all__ = ("State",)
 
 CORRECT_MATCH = "that's the right answer"
@@ -19,19 +21,44 @@ WRONG_MESSAGE = "the answer is wrong"
 TIMEOUT_MESSAGE = "the answer was submitted too recently"
 UNKNOWN_MESSAGE = "the answer state is unknown"
 
+case_fold = str.casefold
+
 
 class State(Enum):
+    """Represents the state of answers."""
+
     CORRECT = auto()
+    """The answer is correct."""
+
     SOLVED = auto()
+    """The problem part was already solved."""
+
     LOW = auto()
+    """The answer is too low."""
+
     HIGH = auto()
+    """The answer is too high."""
+
     WRONG = auto()
+    """The answer is wrong."""
+
     TIMEOUT = auto()
+    """The answer was submitted too recently (timeout)."""
+
     UNKNOWN = auto()
+    """The answer state is unknown."""
 
     @classmethod
     def match(cls, string: str) -> State:
-        string = string.casefold()
+        """Matches the given `string` and returns the corresponding state.
+
+        Arguments:
+            string: The string to match.
+
+        Returns:
+            The corresponding state ([`UNKNOWN`][aoc.states.State.UNKNOWN] if no match is found).
+        """
+        string = case_fold(string)
 
         if CORRECT_MATCH in string:
             return cls.CORRECT
@@ -55,6 +82,11 @@ class State(Enum):
 
     @property
     def message(self) -> str:
+        """Returns the message for this state.
+
+        Returns:
+            The message for this state.
+        """
         cls = type(self)
 
         if self is cls.CORRECT:
@@ -78,4 +110,4 @@ class State(Enum):
         if self is cls.UNKNOWN:
             return UNKNOWN_MESSAGE
 
-        return UNKNOWN_MESSAGE  # type: ignore  # pragma: never
+        assert_never(self)  # pragma: never

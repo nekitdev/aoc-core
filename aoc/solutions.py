@@ -82,7 +82,7 @@ class Solution(Protocol[I, T, U]):
         """Solves part one of the problem.
 
         Arguments:
-            input: The input of the problem, as returned by [`parse`][aoc.solution.Solution.parse].
+            input: The input of the problem, as returned by [`parse`][aoc.solutions.Solution.parse].
 
         Returns:
             The answer to part one of the problem.
@@ -94,7 +94,7 @@ class Solution(Protocol[I, T, U]):
         """Solves part two of the problem.
 
         Arguments:
-            input: The input of the problem, as returned by [`parse`][aoc.solution.Solution.parse].
+            input: The input of the problem, as returned by [`parse`][aoc.solutions.Solution.parse].
 
         Returns:
             The answer to part two of the problem.
@@ -185,7 +185,7 @@ class FinalSolution(Protocol[I, T]):
 
         Arguments:
             input: The input of the problem, as returned by
-                [`parse`][aoc.solution.FinalSolution.parse].
+                [`parse`][aoc.solutions.FinalSolution.parse].
 
         Returns:
             The answer to the problem.

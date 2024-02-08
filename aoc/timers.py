@@ -22,8 +22,13 @@ class Elapsed:
     """Represents elapsed time, in nanoseconds and human-readable format."""
 
     nanoseconds: int = field()
+    """The time elapsed, in nanoseconds."""
+
     rounding: int = field(default=DEFAULT_ROUNDING)
+    """The rounding to use when converting to human-readable format."""
+
     string: str = field(init=False)
+    """The time elapsed, in human-readable format."""
 
     @string.default
     def default_string(self) -> str:
@@ -63,7 +68,7 @@ class Timer:
         return Elapsed(self.clock() - self.created, rounding)
 
     def reset(self) -> Self:
-        """Creates and returns a new timer of the same type and with the same clock.
+        """Creates and returns a new timer of the same type with the same clock.
 
         Returns:
             The timer created.
