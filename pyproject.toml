@@ -22,8 +22,8 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
+Chat = "https://nekit.dev/chat"
 Funding = "https://nekit.dev/funding"
-Discord = "https://nekit.dev/discord"
 Issues = "https://github.com/nekitdev/aoc-core/issues"
 
 [[tool.poetry.packages]]

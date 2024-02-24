@@ -278,7 +278,7 @@ If you are interested in contributing to `aoc-core`, make sure to take a look at
 
 [Email]: mailto:support@nekit.dev
 
-[Discord]: https://nekit.dev/discord
+[Discord]: https://nekit.dev/chat
 
 [Actions]: https://github.com/nekitdev/aoc-core/actions
 
@@ -293,7 +293,7 @@ If you are interested in contributing to `aoc-core`, make sure to take a look at
 [Coverage]: https://codecov.io/gh/nekitdev/aoc-core
 [Documentation]: https://nekitdev.github.io/aoc-core
 
-[Discord Badge]: https://img.shields.io/badge/chat-discord-5865f2
+[Discord Badge]: https://img.shields.io/discord/728012506899021874
 [License Badge]: https://img.shields.io/pypi/l/aoc-core
 [Version Badge]: https://img.shields.io/pypi/v/aoc-core
 [Downloads Badge]: https://img.shields.io/pypi/dm/aoc-core
