@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aoc-core"
-version = "0.1.0"
+version = "0.1.1"
 description = "Advent of Code in Python."
 authors = ["nekitdev"]
 license = "MIT"
@@ -132,7 +132,7 @@ strict = true
 
 [tool.changelogging]
 name = "aoc-core"
-version = "0.1.0"
+version = "0.1.1"
 url = "https://github.com/nekitdev/aoc-core"
 directory = "changes"
 output = "CHANGELOG.md"
