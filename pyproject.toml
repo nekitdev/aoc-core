@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aoc-core"
-version = "0.1.1"
+version = "0.1.2"
 description = "Advent of Code in Python."
 authors = ["nekitdev"]
 license = "MIT"
@@ -35,33 +35,33 @@ aoc = "aoc.main:aoc"
 [tool.poetry.dependencies]
 python = ">= 3.8"
 
-attrs = "^23.2.0"
+attrs = ">= 23.2.0"
 
-pendulum = "^3.0.0"
+pendulum = ">= 3.0.0"
 
-click = "^8.1.7"
+click = ">= 8.1.7"
 
-versions = "^2.1.0"
+versions = ">= 2.1.0"
 
-entrypoint = "^2.0.0"
+entrypoint = ">= 2.0.0"
 
-aiohttp = "^3.9.3"
-yarl = "^1.9.4"
+aiohttp = ">= 3.9.3"
+yarl = ">= 1.9.4"
 
-typing-aliases = "^1.7.0"
-typing-extensions = "^4.9.0"
-wraps = "^0.9.0"
+typing-aliases = ">= 1.7.0"
+typing-extensions = ">= 4.9.0"
+wraps = ">= 0.9.0"
 
 [tool.poetry.dependencies.trogon]
-version = "^0.5.0"
+version = ">= 0.5.0"
 python = "^3.8"
 
 [tool.poetry.dependencies.funcs]
-version = "^0.9.0"
+version = ">= 0.9.0"
 optional = true
 
 [tool.poetry.dependencies.iters]
-version = "^0.15.0"
+version = ">= 0.16.0"
 optional = true
 
 [tool.poetry.extras]
@@ -132,7 +132,7 @@ strict = true
 
 [tool.changelogging]
 name = "aoc-core"
-version = "0.1.1"
+version = "0.1.2"
 url = "https://github.com/nekitdev/aoc-core"
 directory = "changes"
 output = "CHANGELOG.md"

@@ -6,7 +6,7 @@ __url__ = "https://github.com/nekitdev/aoc-core"
 __title__ = "aoc"
 __author__ = "nekitdev"
 __license__ = "MIT"
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 from aoc.data import dump_data, get_path_for_key, load_data
 from aoc.errors import DataNotFound, InternalError, TokenNotFound

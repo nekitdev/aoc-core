@@ -44,7 +44,7 @@ Or by directly specifying it in the configuration like so:
 
 ```toml
 [tool.poetry.dependencies]
-aoc-core = "^0.1.1"
+aoc-core = "^0.1.2"
 ```
 
 Alternatively, you can add it directly from the source:
