@@ -68,7 +68,7 @@ optional = true
 ext = ["funcs", "iters"]  # `wraps` is required to handle panics
 
 [tool.poetry.group.format.dependencies]
-ruff = "0.2.2"
+ruff = "0.3.1"
 
 [tool.poetry.group.check.dependencies]
 mypy = "1.8.0"
