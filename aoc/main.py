@@ -7,7 +7,7 @@ import click
 from aiohttp import ClientError
 from trogon import tui  # type: ignore
 from typing_aliases import DynamicTuple, NormalError
-from wraps import Panic
+from wraps.panics import Panic
 
 from aoc.constants import DATA_PATH, TOKEN_PATH
 from aoc.data import dump_data

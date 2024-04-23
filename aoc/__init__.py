@@ -6,10 +6,10 @@ __url__ = "https://github.com/nekitdev/aoc-core"
 __title__ = "aoc"
 __author__ = "nekitdev"
 __license__ = "MIT"
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 
 from aoc.data import dump_data, get_path_for_key, load_data
-from aoc.errors import DataNotFound, InternalError, TokenNotFound
+from aoc.errors import DataNotFound, LogicalError, TokenNotFound
 from aoc.http import HTTPClient, Route
 from aoc.names import get_key_by_name, get_name_by_key
 from aoc.primitives import Day, Key, Year
@@ -46,7 +46,7 @@ __all__ = (
     # errors
     "TokenNotFound",
     "DataNotFound",
-    "InternalError",
+    "LogicalError",
     # tokens
     "load_token",
     "dump_token",

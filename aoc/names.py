@@ -1,7 +1,7 @@
 from re import compile
 from typing import Literal
 
-from aoc.errors import InternalError
+from aoc.errors import LogicalError
 from aoc.primitives import Day, Key, Year
 
 __all__ = ("get_key_by_name", "get_name_by_key")
@@ -14,6 +14,7 @@ DAY: Literal["day"] = "day"
 
 YEAR_TITLE = YEAR.title()
 """The `Year` literal."""
+
 DAY_TITLE = DAY.title()
 """The `Day` literal."""
 
@@ -48,7 +49,7 @@ def get_key_by_name(name: str) -> Key:
     Raises:
         TypeError: The `name` does not match the expected format.
         ValueError: The year or the day is not valid.
-        InternalError: The pattern was matched but `year` or `day` group is not set.
+        LogicalError: The pattern was matched but `year` or `day` group is not set.
     """
     match = NAME.match(name)
 
@@ -58,14 +59,14 @@ def get_key_by_name(name: str) -> Key:
     year_option = match.group(YEAR)
 
     if year_option is None:
-        raise InternalError(NAME_MATCHED_BUT_NO_YEAR)
+        raise LogicalError(NAME_MATCHED_BUT_NO_YEAR)
 
     year_value = int(year_option)
 
     day_option = match.group(DAY)
 
     if day_option is None:
-        raise InternalError(NAME_MATCHED_BUT_NO_DAY)
+        raise LogicalError(NAME_MATCHED_BUT_NO_DAY)
 
     day_value = int(day_option)
 

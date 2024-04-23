@@ -6,8 +6,8 @@ __all__ = (
     # normal errors
     "TokenNotFound",
     "DataNotFound",
-    # internal errors
-    "InternalError",
+    # logical errors
+    "LogicalError",
 )
 
 TOKEN_NOT_FOUND = "token not found (path `{}`)"
@@ -52,5 +52,5 @@ class DataNotFound(RuntimeError):
         return self._path
 
 
-class InternalError(RuntimeError):
-    """Represents internal errors in the library."""
+class LogicalError(RuntimeError):
+    """Represents logical errors in the library."""

@@ -1,5 +1,7 @@
 from typing import Final
 
+from iters.iters import iter
+
 from aoc.solutions import Solution
 
 UP: Final = "("
@@ -21,7 +23,7 @@ class Year2015Day01(Solution[str, int, int]):
 
         floor = 0
 
-        for position, character in enumerate(input, 1):  # one-based indexing
+        for position, character in iter(input).enumerate_from(1).unwrap():  # one-based indexing
             if character == up:
                 floor += 1
 

@@ -44,7 +44,7 @@ Or by directly specifying it in the configuration like so:
 
 ```toml
 [tool.poetry.dependencies]
-aoc-core = "^0.1.3"
+aoc-core = "^0.2.0"
 ```
 
 Alternatively, you can add it directly from the source:
@@ -62,6 +62,8 @@ and [`wraps`][wraps] which can help solving problems in functional style.
 ## Example
 
 This example assumes `aoc` is installed and in `PATH`.
+
+One also needs to install the `ext` extra to use the `iters` module.
 
 We will be solving problem the first ever problem of Advent of Code, that is, [`2015-01`][2015-01].
 
@@ -195,6 +197,8 @@ Nothing too difficult, here is the solution for part two included:
 ```python
 from typing import Final
 
+from iters.iters import iter
+
 from aoc.solutions import Solution
 
 UP: Final = "("
@@ -216,7 +220,7 @@ class Year2015Day01(Solution[str, int, int]):
 
         floor = 0
 
-        for position, character in enumerate(input, 1):  # one-based indexing
+        for position, character in iter(input).enumerate_from(1).unwrap():  # one-based indexing
             if character == up:
                 floor += 1
 
